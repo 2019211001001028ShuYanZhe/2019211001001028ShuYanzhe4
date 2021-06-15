@@ -72,7 +72,29 @@
                 <tbody>
 
                 <!-- loop_start -->
-
+                <c:forEach var="0" items="${orderList}">
+                    <tr>
+                        <td>OID:${o.orderId}</td>
+                        <td>${o.orderDate}</td>
+                        <%com.ShuYanzhe.model.Order o=(com.ShuYanzhe.model.Order)pageContext.findAttribute("o");
+                            int userId=o.getCustomerId();
+                            java.sql.Connection con=(java.sql.Connection)application.getAttribute("con");
+                            com.ShuYanzhe.dao.UserDao userDao=new com.ShuYanzhe.dao.UserDao();
+                            String customerName=userDao.findById(con,userId).getUsername();
+                        %>
+                        <td><%=customerName%></td>
+                        <td>
+                            <p>${o.firstName} ${o.lastName}<p><p>${o.address1}</p><p>${o.address2}</p>
+                            <p>${o.city},${o.state},${o.country}-${o.postalCode}</p><p>${o.phone}</p>
+                        </td>
+                        <td class="cart_total">${o.paymentId}
+                            <%	int n=o.getPaymentId();
+                                String paymentType=com.ShuYanzhe.model.Payment.findByPaymentId(con,n);
+                            %><p class="cart_total_price"><%=paymentType %></p>
+                        </td>
+                        <td><button class="btn btn-default update" id="${o.orderId}">Details</button> </td>
+                    </tr>
+                </c:forEach>
                 <tr>
                     <td>OID:order Id</td>
                     <td>order Date</td>
